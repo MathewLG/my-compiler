@@ -17,7 +17,9 @@ reserved = {
     "and" : "AND",
     "or" : "OR",
     "if": "IF",
-    "else": "ELSE"
+    "else": "ELSE",
+    "for" : "FOR", 
+    "while" : "WHILE"
 }
 
 
