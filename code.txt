@@ -1,3 +1,11 @@
-int a = 20;
-int b = 15;
-int c = a+b;
+int varA;
+int varB;
+varA = 1 + 2 + 3;
+varB = 2;
+if ( true ) {
+    int b;
+    b = 3;
+    print varA;
+}
+print b;
+varB = 2;

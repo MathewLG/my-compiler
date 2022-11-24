@@ -1,11 +1,5 @@
 import sys
-import ply.lex as lex
-import ply.yacc as yacc
 sys.path.insert(0, "..")
-
-'''
-    Palabras reservadas del lenguaje
-'''
 
 reserved = {
     "int": "INTDCL",
@@ -14,33 +8,19 @@ reserved = {
     "boolean": "BOOLDCL",
     "true": "BOOLVAL",
     "false": "BOOLVAL",
-    "and" : "AND",
-    "or" : "OR",
     "if": "IF",
-    "else": "ELSE",
-    "for" : "FOR", 
-    "while" : "WHILE"
+    "else": "ELSE"
 }
 
 
 tokens = [
-    'NAME', 'INUMBER', 'FNUMBER', 'EQUALS', 'NOT_EQUALS', 'GREATER_EQUAL', 'LESSER_EQUAL'
+    'NAME', 'INUMBER', 'FNUMBER',
 ]
 tokens.extend(reserved.values())
 
-literals = ['=', '+', '-', ';', '(', ')', '{', '}', '!', '>', '<']
-
+literals = ['=', '+', '-', ';', '(', ')', '{', '}']
 
 # Tokens
-
-#Tokens de mas de un simbolo 
-
-t_EQUALS = r'=='
-t_NOT_EQUALS = r'!='
-t_GREATER_EQUAL = r'>='
-t_LESSER_EQUAL = r'<='
-
-
 
 def t_NAME(t):
     r'[a-zA-Z_]+[a-zA-Z0-9]*' #r'[a-eg-hj-oq-z]'
@@ -73,7 +53,7 @@ def t_error(t):
     t.lexer.skip(1)
 
 # Build the lexer
-
+import ply.lex as lex
 lexer = lex.lex()
 
 # Parsing rules
@@ -251,7 +231,7 @@ def p_error(p):
     else:
         print("Syntax error at EOF")
 
-
+import ply.yacc as yacc
 parser = yacc.yacc()
 
 
@@ -266,6 +246,8 @@ labelCounter = 0
 def genTAC(node):
     global varCounter
     global labelCounter
+    if node == None:
+        return ""
     if ( node.type == "ASIGN" ):
         print(node.childrens[0].val  + " := " + genTAC(node.childrens[1]) )
     elif ( node.type == "INUMBER"):
@@ -276,7 +258,7 @@ def genTAC(node):
         print( tempVar + " := " + genTAC(node.childrens[0]) + " + " + genTAC(node.childrens[1]))
         return tempVar
     elif ( node.type == "PRINT"):
-        print( "PRINT " + genTAC(node.childrens[0]))
+        print( "PRINT " + str(genTAC(node.childrens[0])))
     elif ( node.type == "IF" ):
         tempVar = "t" + str(varCounter)
         varCounter = varCounter +1
