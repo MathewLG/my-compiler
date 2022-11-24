@@ -1,5 +1,11 @@
 import sys
+import ply.lex as lex
+import ply.yacc as yacc
 sys.path.insert(0, "..")
+
+'''
+    Palabras reservadas del lenguaje
+'''
 
 reserved = {
     "int": "INTDCL",
@@ -8,6 +14,8 @@ reserved = {
     "boolean": "BOOLDCL",
     "true": "BOOLVAL",
     "false": "BOOLVAL",
+    "and" : "AND",
+    "or" : "OR",
     "if": "IF",
     "else": "ELSE"
 }
@@ -53,7 +61,7 @@ def t_error(t):
     t.lexer.skip(1)
 
 # Build the lexer
-import ply.lex as lex
+
 lexer = lex.lex()
 
 # Parsing rules
@@ -231,7 +239,7 @@ def p_error(p):
     else:
         print("Syntax error at EOF")
 
-import ply.yacc as yacc
+
 parser = yacc.yacc()
 
 
