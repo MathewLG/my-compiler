@@ -24,13 +24,23 @@ reserved = {
 
 
 tokens = [
-    'NAME', 'INUMBER', 'FNUMBER',
+    'NAME', 'INUMBER', 'FNUMBER', 'EQUALS', 'NOT_EQUALS', 'GREATER_EQUAL', 'LESSER_EQUAL'
 ]
 tokens.extend(reserved.values())
 
 literals = ['=', '+', '-', ';', '(', ')', '{', '}', '!', '>', '<']
 
+
 # Tokens
+
+#Tokens de mas de un simbolo 
+
+t_EQUALS = r'=='
+t_NOT_EQUALS = r'!='
+t_GREATER_EQUAL = r'>='
+t_LESSER_EQUAL = r'<='
+
+
 
 def t_NAME(t):
     r'[a-zA-Z_]+[a-zA-Z0-9]*' #r'[a-eg-hj-oq-z]'
