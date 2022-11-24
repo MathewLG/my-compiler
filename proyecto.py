@@ -26,7 +26,7 @@ tokens = [
 ]
 tokens.extend(reserved.values())
 
-literals = ['=', '+', '-', ';', '(', ')', '{', '}']
+literals = ['=', '+', '-', ';', '(', ')', '{', '}', '!', '>', '<']
 
 # Tokens
 
