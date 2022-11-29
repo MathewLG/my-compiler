@@ -129,7 +129,10 @@ def p_statements_recursion(p):
         p[0] = stmts
     else: 
         p[0] = [ stmt ]
-    
+
+#La declaracion de numeros enteros consiste en: int <NOMBRE> ;
+#En este punto, se declara la variable, pero no se le asigna un valor. 
+#Por defecto, el valor de los numeros enteros no asignados es 0. 
 def p_dcl_declare_int(p):
     'statement : INTDCL NAME ";"'
     symbolsTable["table"][p[2]] = { "type": "INT", "value":0}
@@ -138,6 +141,9 @@ def p_dcl_declare_int(p):
     n.val = p[2]
     p[0] = n
 
+#La declaracion de numeros flotantes consiste en: float <NOMBRE> ;
+#En este punto, se declara la variable, pero no se le asigna un valor. 
+#Por defecto, el valor de los numeros flotantes no asignados es 0. 
 def p_statement_declare_float(p):
     'statement : FLOATDCL NAME ";"'
     symbolsTable["table"][p[2]] = { "type": "FLOAT", "value":0 }
@@ -146,6 +152,9 @@ def p_statement_declare_float(p):
     n.val = p[2]
     p[0] = n
 
+#La declaracion de numeros flotantes consiste en: boolean <NOMBRE> ;
+#En este punto, se declara la variable, pero no se le asigna un valor. 
+#Por defecto, el valor de los numeros flotantes no asignados es False. 
 def p_statement_declare_bool(p):
     'statement : BOOLDCL NAME ";"'
     symbolsTable["table"][p[2]] = { "type": "BOOLEAN", "value": False }
@@ -154,6 +163,7 @@ def p_statement_declare_bool(p):
     n.val = p[2]
     p[0] = n
 
+#La declaracion de un print consiste en: print <expresion> ;
 def p_statement_print(p):
     'statement : PRINT expression ";"'
     n = Node()
