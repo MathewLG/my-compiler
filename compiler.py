@@ -181,6 +181,15 @@ def p_statement_if(p):
     n.childrens.append(n2)
     p[0] = n
 
+def p_statement_else(p):
+    'statement : ELSE "{" stmts "}"'
+    n = Node()
+    n.type = 'ELSE'
+    n2 = Node()
+    n2.childrens = p[3]
+    n.childrens.append(n2)
+    p[0] = n
+
 def p_statement_assign(p):
     'statement : NAME "=" expression ";"'
     if p[1] not in symbolsTable["table"]:
