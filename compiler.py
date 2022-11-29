@@ -32,7 +32,7 @@ tokens = [
 ]
 tokens.extend(reserved.values())
 
-literals = ['=', '+', '-', ';', '(', ')', '{', '}']
+literals = ['=', '+', '-', ';', '(', ')', '{', '}', '<', '>']
 
 def t_NAME(t):
     r'[a-zA-Z_]+[a-zA-Z0-9]*' #r'[a-eg-hj-oq-z]'
@@ -53,8 +53,6 @@ def t_INUMBER(t):
     return t
 
 
-t_ignore = " \t"
-
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += t.value.count("\n")
@@ -64,13 +62,21 @@ def t_error(t):
     t.lexer.skip(1)
 
 
+t_ignore = " \t"
+t_EQUALS = r'=='
+t_NOT_EQUALS = r'!='
+t_GREATER_EQUAL = r'>='
+t_LESS_EQUAL = r'<='
+
+
 
 #Construccion del tokenizador. 
 lexer = lex.lex()
 
+
+
+
 # Parsing rules
-
-
 
 class Node:
     
