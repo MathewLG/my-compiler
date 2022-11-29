@@ -76,7 +76,7 @@ lexer = lex.lex()
 
 
 
-# Parsing rules
+# Reglas de parseo
 
 class Node:
     
@@ -104,6 +104,11 @@ symbolsTable = {
 abstractTree = None
 
 
+'''
+     *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+      ----------- El punto de entrada del programa: Un programa esta hecho de statements. 
+      Se instancia un arbol abstracto. Se asigna un nodo raiz al arbol. 
+'''
 def p_prog(p):
     'prog : stmts'
     global abstractTree
@@ -111,11 +116,13 @@ def p_prog(p):
     abstractTree.type = 'root'
     abstractTree.childrens.extend(p[1])
 
+
+#Un statement puede tener mas statements a su derecha. 
 def p_statements_recursion(p):
     '''stmts : statement stmts
              | statement '''
     stmt = p[1]
-    if len(p) == 3:
+    if len(p) == 3: #Si hay recursion por la derecha
         stmts = [ stmt ]
         stmts.extend(p[2])
         p[0] = stmts
