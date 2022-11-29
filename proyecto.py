@@ -1,6 +1,20 @@
+'''
+    Mathew Gabriel Lopez Garcia
+    A01635001
+
+    Proyecto final para la clase: Diseño de Compiladores.
+'''
+
+#Imports y dependencias
 import sys
+import ply.lex as lex
+import ply.yacc as yacc
 sys.path.insert(0, "..")
 
+
+#Paso 1. Tokenizacion para el analisis lexico 
+
+#Definicion de tokens del lenguaje
 reserved = {
     "int": "INTDCL",
     "float": "FLOATDCL",
@@ -20,14 +34,11 @@ tokens.extend(reserved.values())
 
 literals = ['=', '+', '-', ';', '(', ')', '{', '}']
 
-# Tokens
-
 def t_NAME(t):
     r'[a-zA-Z_]+[a-zA-Z0-9]*' #r'[a-eg-hj-oq-z]'
     if t.value in reserved:
         t.type = reserved[t.value]
     return t
-
 
 
 def t_FNUMBER(t):
@@ -52,8 +63,9 @@ def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 
-# Build the lexer
-import ply.lex as lex
+
+
+#Construccion del tokenizador. 
 lexer = lex.lex()
 
 # Parsing rules
@@ -231,7 +243,7 @@ def p_error(p):
     else:
         print("Syntax error at EOF")
 
-import ply.yacc as yacc
+
 parser = yacc.yacc()
 
 
