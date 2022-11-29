@@ -11,8 +11,8 @@ import ply.lex as lex
 import ply.yacc as yacc
 sys.path.insert(0, "..")
 
-
-#Paso 1. Tokenizacion para el analisis lexico 
+#-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*--*-*-*-*-*-*-*-*-*
+#----------------------Paso 1. Tokenizacion para el analisis lexico---------------------------------------------------
 
 #Definicion de tokens del lenguaje
 reserved = {
@@ -70,7 +70,7 @@ t_LESS_EQUAL = r'<='
 
 
 
-#Construccion del tokenizador. 
+#------------------------------Paso 2. Construccion del tokenizador ---------------------------------------------------
 lexer = lex.lex()
 
 
