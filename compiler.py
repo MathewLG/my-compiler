@@ -28,7 +28,7 @@ reserved = {
 
 
 tokens = [
-    'NAME', 'INUMBER', 'FNUMBER',
+    'NAME', 'INUMBER', 'FNUMBER', 'EQUALS', 'NOT_EQUALS', 'GREATER_EQUAL', 'LESS_EQUAL',
 ]
 tokens.extend(reserved.values())
 
