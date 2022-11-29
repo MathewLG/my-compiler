@@ -70,14 +70,14 @@ t_LESS_EQUAL = r'<='
 
 
 
-#------------------------------Paso 2. Construccion del tokenizador ---------------------------------------------------
+#------------------------------Paso 2. Construccion del lexer ---------------------------------------------------
 lexer = lex.lex()
 
 
+#------------------------------ Paso 3. Analisis sintactico (parseo)
 
 
-# Reglas de parseo
-
+# ----------- Creacion de una clase Node para la creacion del arbol sintactico abstracto.
 class Node:
     
     # childrens = None
@@ -96,11 +96,12 @@ class Node:
             c.print(lvl+1)
         
 
-# dictionary of names
+# Creamos un diccionario que constituye la tabla de simbolos de nuestro compilador
 symbolsTable = {
     "table" : {},
     "parent" : None,
 }
+#Inicializacion de un arbol sintactico abstracto vacio. 
 abstractTree = None
 
 
