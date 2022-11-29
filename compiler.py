@@ -23,7 +23,8 @@ reserved = {
     "true": "BOOLVAL",
     "false": "BOOLVAL",
     "if": "IF",
-    "else": "ELSE"
+    "else": "ELSE", 
+    "elif" : "ELIF"
 }
 
 
@@ -178,6 +179,15 @@ def p_statement_if(p):
     n2 = Node()
     n2.childrens = p[6]
     n.childrens.append(p[3])
+    n.childrens.append(n2)
+    p[0] = n
+
+def p_statement_elif(p):
+    'statement : ELIF "{" stmts "}"'
+    n = Node()
+    n.type = 'ELIF'
+    n2 = Node()
+    n2.childrens = p[3]
     n.childrens.append(n2)
     p[0] = n
 

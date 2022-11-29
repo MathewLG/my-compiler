@@ -7,5 +7,11 @@ if ( true ) {
     b = 3;
     print varA;
 }
+elif{
+    print varA;
+}
+else {
+    print varB;
+}
 print b;
 varB = 2;
