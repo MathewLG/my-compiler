@@ -1,0 +1,24 @@
+varA := 8
+t0 := 2 - 1
+varB := t0
+t1 := !True
+gotoLabelIf t1 l0
+b := 3
+PRINT 8
+l0
+PRINT 8
+PRINT 2
+WHILE
+t2 := !True
+gotoLabelWhile t2 l1
+Statements
+PRINT 9
+l1
+FOR
+t3 := 1
+t4 = numero < 5
+gotoLabelFor t3 l2
+Statements
+l2
+PRINT 3
+varB := 2
