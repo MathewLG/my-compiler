@@ -393,6 +393,16 @@ def genTAC(node):
         print ( "gotoLabelIf " + tempVar + " " + tempLabel)
         genTAC(node.childrens[1])
         print ( tempLabel)
+    elif ( node.type == "WHILE" ):
+        print("WHILE")
+        tempVar = "t" + str(varCounter)
+        varCounter = varCounter +1
+        print ( tempVar + " := !" + str(node.childrens[0].val))
+        tempLabel = "l" + str(labelCounter)
+        labelCounter = labelCounter + 1
+        print ( "gotoLabelWhile " + tempVar + " " + tempLabel)
+        genTAC(node.childrens[1])
+        print ( tempLabel)
     else:
         for child in node.childrens:
             genTAC(child)
