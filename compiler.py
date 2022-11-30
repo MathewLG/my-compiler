@@ -208,7 +208,7 @@ def p_forcontrol(p):
     n = Node()
     p[0] = n
 
-def p_comparison(p):
+def p_simple_comparison(p):
     '''comparison : NAME "<" NAME 
                 | NAME "<" INUMBER
                 | NAME ">" NAME
