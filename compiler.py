@@ -29,10 +29,10 @@ reserved = {
     "while" : "WHILE"
 }
 
-print("PROBANDO")
+
 
 tokens = [
-    'NAME', 'INUMBER', 'FNUMBER', 'EQUALS', 'NOT_EQUALS', 'GREATER_EQUAL', 'LESS_EQUAL',
+    'NAME', 'INUMBER', 'FNUMBER', 'EQUALS', 'NOT_EQUALS', 'GREATER_EQUAL', 'LESS_EQUAL', 'INCREMENT', 'DECREMENT'
 ]
 tokens.extend(reserved.values())
 
@@ -72,7 +72,8 @@ t_EQUALS = r'=='
 t_NOT_EQUALS = r'!='
 t_GREATER_EQUAL = r'>='
 t_LESS_EQUAL = r'<='
-
+t_INCREMENT = r'\+\+'
+t_DECREMENT = r'--'
 
 #------------------------------Paso 2. Construccion del lexer ---------------------------------------------------
 lexer = lex.lex()
@@ -187,7 +188,7 @@ def p_statement_if(p):
     p[0] = n
 
 def p_statement_for(p):
-    'statement : FOR "(" boolexp ")" "{" stmts "}"'
+    'statement : FOR "(" start ";" comparison ";" forcontrol ")" "{" stmts "}"'
     n = Node()
     n.type = 'FOR'
     p[0] = n
@@ -197,6 +198,28 @@ def p_statement_for(p):
     # codeblock = Node()
     # codeblock.childrens = p[10]
     # n.childrens.append(codeblock)
+
+def p_forcontrol(p):
+    '''forcontrol : NAME INCREMENT
+                | NAME DECREMENT '''
+    n = Node()
+    p[0] = n
+
+def p_comparison(p):
+    '''comparison : NAME "<" NAME 
+                | NAME "<" INUMBER
+                | NAME ">" NAME
+                | NAME ">" INUMBER '''
+    n = Node()
+    p[0] = n
+
+def p_start_for(p):
+    'start : NAME "=" INUMBER'
+    n = Node()
+    n.type = "INUMBER"
+    n.val = p[1]
+    n.childrens.append(p[3])
+    p[0] = n
     
 def p_statement_while(p):
     'statement : WHILE "(" boolexp ")" "{" stmts "}"'
@@ -287,6 +310,12 @@ def p_expression_binop(p):
         n.childrens.append(p[3])
         p[0] = n
 
+def p_unary_operator(p):
+    "expression : INUMBER INCREMENT"
+    n = Node()
+    n.type = 'UNARYOP'
+    n.val = int(p[1]) + 1
+    p[0] = n
 
 def p_expression_inumber(p):
     "expression : INUMBER"
@@ -324,6 +353,7 @@ def p_expression_name(p):
         n.type = 'ID'
         n.val = p[1]
         p[0] = n
+
 
 
 def p_error(p):

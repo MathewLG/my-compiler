@@ -1,5 +1,6 @@
 int varA;
 int varB;
+int numero;
 varA = 8;
 varB = 2 - 1;
 if ( true ) {
@@ -15,6 +16,9 @@ else {
 }
 while ( true ) {
     print 9;
+}
+for (numero = 1; numero < 5 ; numero++) {
+     print 2;
 }
 print b;
 varB = 2;
