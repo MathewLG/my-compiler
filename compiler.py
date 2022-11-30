@@ -36,7 +36,7 @@ tokens = [
 ]
 tokens.extend(reserved.values())
 
-literals = ['=', '+', '-', ';', '(', ')', '{', '}', '<', '>']
+literals = ['=', '+', '-', ';', '(', ')', '{', '}', '<', '>', '*', '/', '^']
 
 def t_NAME(t):
     r'[a-zA-Z_]+[a-zA-Z0-9]*' #r'[a-eg-hj-oq-z]'
@@ -244,7 +244,10 @@ def p_expression_group(p):
 
 def p_expression_binop(p):
     '''expression : expression '+' expression
-                  | expression '-' expression'''
+                  | expression '-' expression
+                  | expression '*' expression
+                  | expression '/' expression
+                  | expression '^' expression'''
     if p[2] == '+':
         n = Node()
         n.type = '+'
@@ -257,7 +260,24 @@ def p_expression_binop(p):
         n.childrens.append(p[1])
         n.childrens.append(p[3])
         p[0] = n
-    
+    elif p[2] == '*':
+        n = Node()
+        n.type = '*'
+        n.childrens.append(p[1])
+        n.childrens.append(p[3])
+        p[0] = n
+    elif p[2] == '/':
+        n = Node()
+        n.type = '/'
+        n.childrens.append(p[1])
+        n.childrens.append(p[3])
+        p[0] = n
+    elif p[2] == '^':
+        n = Node()
+        n.type = '^'
+        n.childrens.append(p[1])
+        n.childrens.append(p[3])
+        p[0] = n
 
 
 def p_expression_inumber(p):
