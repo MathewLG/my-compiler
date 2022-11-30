@@ -24,9 +24,12 @@ reserved = {
     "false": "BOOLVAL",
     "if": "IF",
     "else": "ELSE", 
-    "elif" : "ELIF"
+    "elif" : "ELIF", 
+    "for" : "FOR",
+    "while" : "WHILE"
 }
 
+print("PROBANDO")
 
 tokens = [
     'NAME', 'INUMBER', 'FNUMBER', 'EQUALS', 'NOT_EQUALS', 'GREATER_EQUAL', 'LESS_EQUAL',
@@ -60,6 +63,7 @@ def t_newline(t):
 
 def t_error(t):
     print("Illegal character '%s'" % t.value[0])
+    
     t.lexer.skip(1)
 
 
@@ -70,12 +74,11 @@ t_GREATER_EQUAL = r'>='
 t_LESS_EQUAL = r'<='
 
 
-
 #------------------------------Paso 2. Construccion del lexer ---------------------------------------------------
 lexer = lex.lex()
 
 
-#------------------------------ Paso 3. Analisis sintactico (parseo)
+#------------------------------ Paso 3. Analisis sintactico (parseo) --------------------------------------------------------
 
 
 # ----------- Creacion de una clase Node para la creacion del arbol sintactico abstracto.
@@ -90,6 +93,7 @@ class Node:
         self.val = ''
 
     def print(self, lvl = 0):
+        f = open("output.txt", "w")
         r = (' ' * lvl) + self.type + ":" + str(self.val)
         print(r)
         #print(self.childrens)
@@ -182,6 +186,20 @@ def p_statement_if(p):
     n.childrens.append(n2)
     p[0] = n
 
+def p_statement_for(p):
+    'statement : FOR "(" boolexp ")" "{" stmts "}"'
+    n = Node()
+    n.type = 'FOR'
+    p[0] = n
+    # n.childrens.append(p[3]) #Start value
+    # n.childrens.append(p[5]) #Boolean condition
+    # n.childrens.append(p[7]) #Increment
+    # codeblock = Node()
+    # codeblock.childrens = p[10]
+    # n.childrens.append(codeblock)
+    
+
+
 def p_statement_elif(p):
     'statement : ELIF "{" stmts "}"'
     n = Node()
@@ -212,6 +230,7 @@ def p_statement_assign(p):
         n1.type = 'ID'
         n1.val = p[1]
         n.childrens.append(n1)
+        symbolsTable["table"][p[1]]["value"] = p[3]
     else: 
         print("Error undeclared variable")
 
@@ -279,7 +298,6 @@ def p_expression_name(p):
         p[0] = n
 
 
-
 def p_error(p):
     if p:
         print("Syntax error at '%s'" % p.value)
@@ -299,6 +317,7 @@ abstractTree.print()
 varCounter = 0
 labelCounter = 0
 def genTAC(node):
+    #sys.stdout = open("output.txt", "a")
     global varCounter
     global labelCounter
     if node == None:
@@ -307,13 +326,15 @@ def genTAC(node):
         print(node.childrens[0].val  + " := " + genTAC(node.childrens[1]) )
     elif ( node.type == "INUMBER"):
         return str(node.val)
+    elif ( node.type == "ID"):
+        return str(symbolsTable["table"][node.val]["value"].val)
     elif ( node.type == "+"):
         tempVar = "t" + str(varCounter)
         varCounter = varCounter +1
         print( tempVar + " := " + genTAC(node.childrens[0]) + " + " + genTAC(node.childrens[1]))
         return tempVar
     elif ( node.type == "PRINT"):
-        print( "PRINT " + str(genTAC(node.childrens[0])))
+        print( "PRINT " + genTAC(node.childrens[0]))
     elif ( node.type == "IF" ):
         tempVar = "t" + str(varCounter)
         varCounter = varCounter +1
@@ -327,10 +348,9 @@ def genTAC(node):
         for child in node.childrens:
             genTAC(child)
     
-
-print ("\ntac:\n")
+f = open("output.txt", "w")
+print("\ntac:\n")
 genTAC(abstractTree)
-
 
 #Some examples
 # for ( i = 0; i < 3; i++){
