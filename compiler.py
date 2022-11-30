@@ -192,12 +192,15 @@ def p_statement_for(p):
     n = Node()
     n.type = 'FOR'
     p[0] = n
-    # n.childrens.append(p[3]) #Start value
-    # n.childrens.append(p[5]) #Boolean condition
-    # n.childrens.append(p[7]) #Increment
-    # codeblock = Node()
-    # codeblock.childrens = p[10]
-    # n.childrens.append(codeblock)
+    start = Node()
+    start.val = p[3].childrens[0]
+    n.childrens.append(start) #Start value
+    n.childrens.append(p[5]) #Boolean condition
+    n.childrens.append(p[7]) #Increment
+    codeblock = Node()
+    codeblock.childrens = p[10]
+    n.childrens.append(codeblock)
+    p[0] = n
 
 def p_forcontrol(p):
     '''forcontrol : NAME INCREMENT
@@ -211,12 +214,13 @@ def p_comparison(p):
                 | NAME ">" NAME
                 | NAME ">" INUMBER '''
     n = Node()
+    n.val = str(str(p[1]) + " " + str(p[2]) + " " + str(p[3]))
     p[0] = n
 
 def p_start_for(p):
     'start : NAME "=" INUMBER'
     n = Node()
-    n.type = "INUMBER"
+    n.type = "STARTFOR"
     n.val = p[1]
     n.childrens.append(p[3])
     p[0] = n
@@ -431,6 +435,21 @@ def genTAC(node):
         tempLabel = "l" + str(labelCounter)
         labelCounter = labelCounter + 1
         print ( "gotoLabelWhile " + tempVar + " " + tempLabel)
+        print("Statements")
+        genTAC(node.childrens[1])
+        print ( tempLabel)
+    elif ( node.type == "FOR" ):
+        print("FOR")
+        tempVar = "t" + str(varCounter)
+        varCounter = varCounter +1
+        print ( tempVar + " := " + str(node.childrens[0].val))
+        tempVar2 = "t" + str(varCounter)
+        varCounter = varCounter +1
+        print( tempVar2 + " = " + str(node.childrens[1].val))
+        tempLabel = "l" + str(labelCounter)
+        labelCounter = labelCounter + 1
+        print ( "gotoLabelFor " + tempVar + " " + tempLabel)
+        print("Statements")
         genTAC(node.childrens[1])
         print ( tempLabel)
     else:
