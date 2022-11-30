@@ -198,7 +198,15 @@ def p_statement_for(p):
     # codeblock.childrens = p[10]
     # n.childrens.append(codeblock)
     
-
+def p_statement_while(p):
+    'statement : WHILE "(" boolexp ")" "{" stmts "}"'
+    n = Node()
+    n.type = "WHILE"
+    codeblock = Node()
+    codeblock.childrens = p[6]
+    n.childrens.append(p[3])
+    n.childrens.append(codeblock)
+    p[0] = n
 
 def p_statement_elif(p):
     'statement : ELIF "{" stmts "}"'
@@ -325,6 +333,7 @@ def p_error(p):
         print("Syntax error at EOF")
 
 
+
 parser = yacc.yacc()
 
 
@@ -352,6 +361,26 @@ def genTAC(node):
         tempVar = "t" + str(varCounter)
         varCounter = varCounter +1
         print( tempVar + " := " + genTAC(node.childrens[0]) + " + " + genTAC(node.childrens[1]))
+        return tempVar
+    elif ( node.type == "-"):
+        tempVar = "t" + str(varCounter)
+        varCounter = varCounter +1
+        print( tempVar + " := " + genTAC(node.childrens[0]) + " - " + genTAC(node.childrens[1]))
+        return tempVar
+    elif ( node.type == "*"):
+        tempVar = "t" + str(varCounter)
+        varCounter = varCounter +1
+        print( tempVar + " := " + genTAC(node.childrens[0]) + " * " + genTAC(node.childrens[1]))
+        return tempVar
+    elif ( node.type == "/"):
+        tempVar = "t" + str(varCounter)
+        varCounter = varCounter +1
+        print( tempVar + " := " + genTAC(node.childrens[0]) + " / " + genTAC(node.childrens[1]))
+        return tempVar
+    elif ( node.type == "^"):
+        tempVar = "t" + str(varCounter)
+        varCounter = varCounter +1
+        print( tempVar + " := " + genTAC(node.childrens[0]) + " ^ " + genTAC(node.childrens[1]))
         return tempVar
     elif ( node.type == "PRINT"):
         print( "PRINT " + genTAC(node.childrens[0]))

@@ -1,7 +1,7 @@
 int varA;
 int varB;
 varA = 8;
-varB = 2;
+varB = 2 - 1;
 if ( true ) {
     int b;
     b = 3;
@@ -12,6 +12,9 @@ elif{
 }
 else {
     print varB;
+}
+while ( true ) {
+    print 9;
 }
 print b;
 varB = 2;
