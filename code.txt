@@ -1,4 +1,4 @@
-int varA;
+int varA = 5;
 int varB;
 int numero;
 varA = 8;

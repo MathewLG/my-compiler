@@ -139,12 +139,24 @@ def p_statements_recursion(p):
 #En este punto, se declara la variable, pero no se le asigna un valor. 
 #Por defecto, el valor de los numeros enteros no asignados es 0. 
 def p_dcl_declare_int(p):
-    'statement : INTDCL NAME ";"'
-    symbolsTable["table"][p[2]] = { "type": "INT", "value":0}
-    n = Node()
-    n.type = "INT_DLC"
-    n.val = p[2]
-    p[0] = n
+    '''statement : INTDCL NAME ";"
+                | INTDCL NAME "=" numerito ";"'''
+    if len(p) == 4:
+        symbolsTable["table"][p[2]] = {"type": "INT", "value": 0}
+        n = Node()
+        n.type = "INTDCL"
+        n.val = p[2]
+        p[0] = n
+    else:
+        symbolsTable["table"][p[2]] = {"type": "INT", "value": p[4]}
+        n = Node()
+        n.type = "INTDCL"
+        n.val = p[2]
+        n2 = Node()
+        n2.type = "ASSIGN"
+        n2.childrens.append(n)
+        n2.childrens.append(p[4])
+        p[0] = n2
 
 #La declaracion de numeros flotantes consiste en: float <NOMBRE> ;
 #En este punto, se declara la variable, pero no se le asigna un valor. 
@@ -330,8 +342,13 @@ def p_unary_operator(p):
     n.val = int(p[1]) + 1
     p[0] = n
 
+#Expresion para declarar y asignar en la misma linea
+def p_asignar_numero(p):
+    '''expression : numerito'''
+    p[0] = p[1]
+
 def p_expression_inumber(p):
-    "expression : INUMBER"
+    "numerito : INUMBER"
     n = Node()
     n.type = 'INUMBER'
     n.val = int(p[1])
@@ -340,7 +357,7 @@ def p_expression_inumber(p):
 
 
 def p_expression_fnumber(p):
-    "expression : FNUMBER"
+    "numerito : FNUMBER"
     n = Node()
     n.type = 'FNUMBER'
     n.val = float(p[1])
