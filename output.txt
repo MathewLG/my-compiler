@@ -1,23 +1,26 @@
 varA := 8
-t0 := 2 - 1
+variable := true
+t2 := 8 - 3
+t1 := 1 + t2
+t0 := 2 - t1
 varB := t0
-t1 := !True
-gotoLabelIf t1 l0
+t3 := !true
+gotoLabelIf t3 l0
 b := 3
 PRINT 8
 l0
 PRINT 8
 PRINT 2
 WHILE
-t2 := !True
-gotoLabelWhile t2 l1
+t4 := !true
+gotoLabelWhile t4 l1
 Statements
 PRINT 9
 l1
 FOR
-t3 := 1
-t4 = numero < 5
-gotoLabelFor t3 l2
+t5 := 1
+t6 = numero < 5
+gotoLabelFor t5 l2
 Statements
 l2
 PRINT 3

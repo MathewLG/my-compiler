@@ -2,7 +2,9 @@ int varA;
 int varB;
 int numero;
 varA = 8;
-varB = 2 - 1;
+boolean variable;
+variable = true;
+varB = 2 - 1 + 8 - 3;
 if ( true ) {
     int b;
     b = 3;

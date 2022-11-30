@@ -26,20 +26,22 @@ reserved = {
     "else": "ELSE", 
     "elif" : "ELIF", 
     "for" : "FOR",
-    "while" : "WHILE"
+    "while" : "WHILE",
+    "and" : "AND",
+    "or" : "OR"
 }
 
 
 
 tokens = [
-    'NAME', 'INUMBER', 'FNUMBER', 'EQUALS', 'NOT_EQUALS', 'GREATER_EQUAL', 'LESS_EQUAL', 'INCREMENT', 'DECREMENT'
+    'NAME', 'INUMBER', 'FNUMBER', 'EQUALS', 'NOT_EQUALS', 'GREATER_EQUAL', 'LESS_EQUAL', 'INCREMENT', 'DECREMENT',
 ]
 tokens.extend(reserved.values())
 
 literals = ['=', '+', '-', ';', '(', ')', '{', '}', '<', '>', '*', '/', '^']
 
 def t_NAME(t):
-    r'[a-zA-Z_]+[a-zA-Z0-9]*' #r'[a-eg-hj-oq-z]'
+    r'[a-zA-Z_]+[a-zA-Z0-9]*'
     if t.value in reserved:
         t.type = reserved[t.value]
     return t
@@ -85,9 +87,6 @@ lexer = lex.lex()
 # ----------- Creacion de una clase Node para la creacion del arbol sintactico abstracto.
 class Node:
     
-    # childrens = None
-    # type = None
-
     def __init__(self):
         self.childrens = []
         self.type = ''
@@ -162,12 +161,24 @@ def p_statement_declare_float(p):
 #En este punto, se declara la variable, pero no se le asigna un valor. 
 #Por defecto, el valor de los numeros flotantes no asignados es False. 
 def p_statement_declare_bool(p):
-    'statement : BOOLDCL NAME ";"'
-    symbolsTable["table"][p[2]] = { "type": "BOOLEAN", "value": False }
-    n = Node()
-    n.type = "BOOL_DLC"
-    n.val = p[2]
-    p[0] = n
+    '''statement : BOOLDCL NAME ";"
+                | BOOLDCL NAME "=" boolexp ";"'''
+    if len(p) == 4:
+        symbolsTable["table"][p[2]] = { "type": "BOOLEAN", "value": False }
+        n = Node()
+        n.type = "BOOLDCL"
+        n.val = p[2]
+        p[0] = n
+    else:
+        symbolsTable["table"][p[2]] = {"type": "BOOL", "value": p[4]}
+        n = Node()
+        n.type = "BOOLDCL"
+        n.val = p[2]
+        n2 = Node()
+        n2.type = "ASSIGN"
+        n2.childrens.append(n)
+        n2.childrens.append(p[4])
+        p[0] = n2
 
 #La declaracion de un print consiste en: print <expresion> ;
 def p_statement_print(p):
@@ -268,8 +279,6 @@ def p_statement_assign(p):
         symbolsTable["table"][p[1]]["value"] = p[3]
     else: 
         print("Error undeclared variable")
-
-
     n.childrens.append(p[3])
     p[0] = n
 
@@ -343,12 +352,35 @@ def p_expression_boolval(p):
     p[0] = p[1]
 
 def p_bool_expression(p):
-    "boolexp : BOOLVAL"
-    n = Node()
-    n.type = 'BOOLVAL'
-    n.val = (p[1] == 'true')
-    p[0] = n
+    '''boolexp : BOOLVAL
+                | NAME
+                | compexp
+                | booleanop
+                | "(" boolexp ")"'''
 
+    if len(p) == 4:
+        p[0] = p[2]
+    elif p[1] in ('true', 'false'):
+        n = Node()
+        n.type = 'BOOLVAL'
+        n.val = p[1]
+        p[0] = n
+    elif p[1] in symbolsTable["table"]:
+        n = Node()
+        n.type = 'ID'
+        n.val = p[1]
+        p[0] = n
+    else:
+        p[0] = p[1]
+
+def p_boolean_operation(p):
+    '''booleanop : boolexp AND boolexp
+                 | boolexp OR boolexp'''
+    n = Node()
+    n.type = p[2]
+    n.childrens.append(p[1])
+    n.childrens.append(p[3])
+    p[0] = n
 
 def p_expression_name(p):
     "expression : NAME"
@@ -358,6 +390,18 @@ def p_expression_name(p):
         n.val = p[1]
         p[0] = n
 
+def p_comparison_expression(p):
+    '''compexp : expression EQUALS expression
+               | expression NOT_EQUALS expression
+               | expression ">" expression
+               | expression "<" expression
+               | expression LESS_EQUAL expression
+               | expression GREATER_EQUAL expression'''
+    n = Node()
+    n.type = p[2]
+    n.childrens.append(p[1])
+    n.childrens.append(p[3])
+    p[0] = n
 
 
 def p_error(p):
@@ -388,6 +432,10 @@ def genTAC(node):
     if ( node.type == "ASIGN" ):
         print(node.childrens[0].val  + " := " + genTAC(node.childrens[1]) )
     elif ( node.type == "INUMBER"):
+        return str(node.val)
+    elif ( node.type == "FNUMBER"):
+        return str(node.val)
+    elif ( node.type == "BOOLVAL"):
         return str(node.val)
     elif ( node.type == "ID"):
         return str(symbolsTable["table"][node.val]["value"].val)
