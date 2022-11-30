@@ -380,7 +380,7 @@ abstractTree.print()
 varCounter = 0
 labelCounter = 0
 def genTAC(node):
-    #sys.stdout = open("output.txt", "a")
+    sys.stdout = open("output.txt", "a")
     global varCounter
     global labelCounter
     if node == None:
