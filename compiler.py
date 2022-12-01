@@ -527,30 +527,3 @@ def genTAC(node):
 f = open("output.txt", "w")
 print("\ntac:\n")
 genTAC(abstractTree)
-
-#Some examples
-# for ( i = 0; i < 3; i++){
-#     stamentes
-# }
-# i := 0
-# t1 = i < 3
-# t0 = !t1
-# gotoLabelif t0 Label1
-
-# staments
-# i = i + 1
-# Label1
-
-
-
-# while ( condicion ) {
-#     staments
-# }
-# WHILE
-# t1 = condicion
-# t0 = !t1
-# gotoLabelif t0 Label1
-
-# staments
-
-# Label1
