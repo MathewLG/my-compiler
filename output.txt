@@ -20,6 +20,7 @@ l1
 FOR
 t5 := 1
 t6 = numero < 5
+t7 := !t6
 gotoLabelFor t5 l2
 Statements
 l2

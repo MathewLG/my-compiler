@@ -513,6 +513,9 @@ def genTAC(node):
         print( tempVar2 + " = " + str(node.childrens[1].val))
         tempLabel = "l" + str(labelCounter)
         labelCounter = labelCounter + 1
+        tempVar3 = "t" + str(varCounter)
+        print ( tempVar3 + " := !" + tempVar2)
+
         print ( "gotoLabelFor " + tempVar + " " + tempLabel)
         print("Statements")
         genTAC(node.childrens[1])
